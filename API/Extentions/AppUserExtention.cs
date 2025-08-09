@@ -17,6 +17,7 @@ namespace API.Extentions
                 Id = appUser.Id,
                 DisplayName = appUser.DisplayName,
                 Email = appUser.Email,
+                ImageUrl = appUser.ImageUrl,
                 Token = tokenService.CreateToken(appUser)
             };
         }
