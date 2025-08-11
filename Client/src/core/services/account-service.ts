@@ -11,6 +11,7 @@ export class AccountService {
   private http = inject(HttpClient);
   private url : string = "https://localhost:5001/api/";
   currentUser = signal<User | null>(null) 
+  
 
   register(creds: RegisterCreds)
   {
@@ -40,7 +41,7 @@ export class AccountService {
     localStorage.removeItem("user")
   }
 
-  private setCurrentUser(user: User)
+  public setCurrentUser(user: User)
   { 
     this.currentUser.set(user)
     localStorage.setItem("user", JSON.stringify(user))

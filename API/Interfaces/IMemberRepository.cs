@@ -13,5 +13,6 @@ namespace API.Interfaces
         Task<IReadOnlyList<Member>> GetAllMemebersAsync();
         Task<Member?> GetMemberByIdAsync(string id);
         Task<IReadOnlyList<Photo>> GetMemeberPhotosAsync(string memberId);
+        Task<Member?> GetMemberByIdToUpdate(string id);        
     }
 }

@@ -1,4 +1,7 @@
+using System.Security.Claims;
+using API.DTOs;
 using API.Entities;
+using API.Extentions;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +30,30 @@ namespace API.Controllers
         [HttpGet("{id}/photos")]
         public async Task<ActionResult<Member>> GetMemberPhotos(string id)
         {
-           return Ok(await memberRepository.GetMemeberPhotosAsync(id));
+            return Ok(await memberRepository.GetMemeberPhotosAsync(id));
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateMemberDetails(MemberUpdateDTO memberUpdateDTO)
+        {
+            var memberId = User.GetMemberId();
+
+            var member = await memberRepository.GetMemberByIdToUpdate(memberId);
+
+            if (member == null) return BadRequest("Memeber is not found");
+
+            member.DisplayName = memberUpdateDTO.DisplayName ?? member.DisplayName;
+            member.Description = memberUpdateDTO.Description ?? member.Description;
+            member.Country = memberUpdateDTO.Country ?? member.Country;
+            member.City = memberUpdateDTO.City ?? member.City;
+
+            member.AppUser.DisplayName = memberUpdateDTO.DisplayName ?? member.AppUser.DisplayName;
+
+            memberRepository.Update(member);
+
+            await memberRepository.SaveAllChangesAsync();
+
+            return Accepted();
         }
     }
 }

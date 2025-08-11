@@ -20,6 +20,13 @@ namespace API.Data
             return await context.Members.FindAsync(id);
         }
 
+        public async Task<Member?> GetMemberByIdToUpdate(string id)
+        {
+            return await context.Members
+                .Include(x => x.AppUser)
+                .SingleOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<IReadOnlyList<Photo>> GetMemeberPhotosAsync(string memberId)
         {
             return await context.Members
